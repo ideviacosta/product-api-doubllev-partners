@@ -29,6 +29,68 @@ Para pruebas rápidas, se recomienda usar size=10 para visualizar múltiples reg
 
 - # Arquitectura Hexagonal - Módulo de Pedidos
 
+
+## Principios SOLID
+
+### Problemas identificados en el código original
+
+El código presentado presenta las siguientes violaciones:
+
+* **SRP (Single Responsibility Principle):** La clase realiza múltiples tareas (acceso a BD, pagos, email, inventario).
+* **OCP (Open/Closed Principle):** No es extensible sin modificar la clase.
+* **DIP (Dependency Inversion Principle):** Depende de implementaciones concretas.
+* **ISP (Interface Segregation Principle):** Mezcla responsabilidades no relacionadas.
+
+---
+
+### Refactorización propuesta
+
+Se definen interfaces para desacoplar responsabilidades:
+
+```java id="j9k2pl"
+public interface PaymentService {
+    void processPayment(double amount);
+}
+
+public interface EmailService {
+    void sendEmail(String message);
+}
+
+public interface InventoryService {
+    void updateStock(Long productId, int quantity);
+}
+```
+
+Se implementa un servicio desacoplado:
+
+```java id="8qz3md"
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+
+    private final PaymentService paymentService;
+    private final EmailService emailService;
+    private final InventoryService inventoryService;
+
+    public void processOrder(Order order) {
+        paymentService.processPayment(order.getTotal());
+        inventoryService.updateStock(order.getProductId(), order.getQuantity());
+        emailService.sendEmail("Order processed successfully");
+    }
+}
+```
+
+---
+
+### Beneficios
+
+* Código más mantenible y escalable
+* Mayor facilidad para pruebas unitarias
+* Desacoplamiento entre capas
+* Mejor alineación con Clean Architecture
+
+
+
 ## Estructura de paquetes
 
 com.empresa.orders

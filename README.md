@@ -369,3 +369,9 @@ También se puede implementar RAG (Retrieval-Augmented Generation) para consulta
 
 La integración se realiza mediante API REST, donde el backend actúa como intermediario entre Claude y los servicios del sistema.
 
+
+
+
+## Mejoras futuras
+- Implementación de pruebas unitarias
+- Uso de MapStruct para mapeo de DTOs

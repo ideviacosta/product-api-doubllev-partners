@@ -455,6 +455,19 @@ También se puede implementar RAG (Retrieval-Augmented Generation) para consulta
 La integración se realiza mediante API REST, donde el backend actúa como intermediario entre Claude y los servicios del sistema.
 
 
+## Uso de IA en el desarrollo
+
+Durante el desarrollo se utilizaron herramientas de IA como **ChatGPT y Claude** como apoyo para:
+
+* Generación de estructuras base de código
+* Resolución de dudas técnicas
+* Optimización de consultas SQL
+* Apoyo en la documentación
+
+Estas herramientas se utilizaron para acelerar el desarrollo y validar enfoques, manteniendo el criterio técnico en la implementación final y en la toma de decisiones.
+
+
+
 
 
 ## Mejoras futuras

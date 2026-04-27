@@ -3,6 +3,29 @@
 - Se utilizó H2 para simplificar la ejecución local
 - Se aplicó arquitectura en capas (Controller - Service - Repository)
 - Se implementaron DTOs para separar entrada y salida
+- ## Paginación
+
+El endpoint `/products` soporta paginación usando los parámetros:
+
+* `page`: número de página (inicia en 0)
+* `size`: cantidad de registros por página
+* `sort`: campo y dirección (ej: `name,asc`)
+
+### Ejemplo
+
+Para obtener todos los productos:
+
+```bash
+GET /products?page=0&size=10
+```
+
+### Nota
+
+* Si se utiliza `page=1&size=1`, los resultados se distribuyen en múltiples páginas.
+* El parámetro `sort` debe enviarse como `campo,direccion` (ej: `price,desc`).
+* Swagger puede generar un formato incorrecto para `sort`, por lo que se recomienda probarlo manualmente.
+
+Para pruebas rápidas, se recomienda usar size=10 para visualizar múltiples registros en una sola respuesta.
 
 - # Arquitectura Hexagonal - Módulo de Pedidos
 

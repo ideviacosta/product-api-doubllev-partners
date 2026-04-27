@@ -281,3 +281,91 @@ Pipeline:
 Esto permite despliegues continuos al hacer merge a la rama main.
 
 
+
+# Microservicio de Notificaciones (Node.js)
+
+## Implementación con Strategy Pattern
+
+```ts
+interface NotificationStrategy {
+  send(userId: string, message: string): void;
+}
+
+class EmailStrategy implements NotificationStrategy {
+  send(userId: string, message: string) {
+    console.log(`Sending EMAIL to ${userId}: ${message}`);
+  }
+}
+
+class SmsStrategy implements NotificationStrategy {
+  send(userId: string, message: string) {
+    console.log(`Sending SMS to ${userId}: ${message}`);
+  }
+}
+
+class PushStrategy implements NotificationStrategy {
+  send(userId: string, message: string) {
+    console.log(`Sending PUSH to ${userId}: ${message}`);
+  }
+}
+
+class NotificationService {
+  private strategies: Record<string, NotificationStrategy>;
+
+  constructor() {
+    this.strategies = {
+      email: new EmailStrategy(),
+      sms: new SmsStrategy(),
+      push: new PushStrategy(),
+    };
+  }
+
+  notify(userId: string, message: string, channel: string) {
+    const strategy = this.strategies[channel];
+    if (!strategy) {
+      throw new Error("Invalid channel");
+    }
+    strategy.send(userId, message);
+  }
+}
+```
+
+---
+
+## Endpoint (Express)
+
+```ts
+import express from "express";
+
+const app = express();
+app.use(express.json());
+
+const service = new NotificationService();
+
+app.post("/notify", (req, res) => {
+  const { userId, message, channel } = req.body;
+
+  service.notify(userId, message, channel);
+
+  res.send({ status: "Notification sent" });
+});
+
+app.listen(3000, () => console.log("Server running"));
+```
+
+---
+
+# Integración de IA
+
+Se puede integrar Claude como agente IA para:
+
+* Validar pedidos antes de procesarlos
+* Recomendar productos
+* Generar respuestas automáticas al cliente
+
+Se utilizaría **tool use / function calling**, permitiendo que Claude invoque endpoints del backend (por ejemplo, crear pedidos o consultar productos).
+
+También se puede implementar RAG (Retrieval-Augmented Generation) para consultar información del catálogo de productos.
+
+La integración se realiza mediante API REST, donde el backend actúa como intermediario entre Claude y los servicios del sistema.
+

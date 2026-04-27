@@ -1,5 +1,7 @@
 package com.catalogo.product_api.service;
 
+import com.catalogo.product_api.dto.ProductRequestDto;
+import com.catalogo.product_api.dto.ProductResponseDto;
 import com.catalogo.product_api.model.Product;
 import com.catalogo.product_api.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,27 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
-    public Product create(Product product) {
-        product.setCreatedAt(LocalDateTime.now());
-        return repository.save(product);
+    public ProductResponseDto create(ProductRequestDto dto) {
+        Product product = Product.builder()
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .stock(dto.getStock())
+                .category(dto.getCategory())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Product saved = repository.save(product);
+
+        return ProductResponseDto.builder()
+                .id(saved.getId())
+                .name(saved.getName())
+                .description(saved.getDescription())
+                .price(saved.getPrice())
+                .stock(saved.getStock())
+                .category(saved.getCategory())
+                .createdAt(saved.getCreatedAt())
+                .build();
     }
 
     public Product update(Long id, Product updated) {

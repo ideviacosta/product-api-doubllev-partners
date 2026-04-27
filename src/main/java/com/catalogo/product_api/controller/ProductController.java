@@ -1,5 +1,7 @@
 package com.catalogo.product_api.controller;
 
+import com.catalogo.product_api.dto.ProductRequestDto;
+import com.catalogo.product_api.dto.ProductResponseDto;
 import com.catalogo.product_api.model.Product;
 import com.catalogo.product_api.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,13 +25,22 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return service.findById(id);
-    }
+    public ProductResponseDto getById(@PathVariable Long id) {
+        Product product = service.findById(id);
 
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .stock(product.getStock())
+                .category(product.getCategory())
+                .createdAt(product.getCreatedAt())
+                .build();
+    }
     @PostMapping
-    public Product create(@Valid @RequestBody Product product) {
-        return service.create(product);
+    public ProductResponseDto create(@Valid @RequestBody ProductRequestDto dto) {
+        return service.create(dto);
     }
 
     @PutMapping("/{id}")

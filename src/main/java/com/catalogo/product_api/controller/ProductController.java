@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,11 +20,10 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    @Operation(summary = "List all products")
-    public Page<Product> getAll(Pageable pageable) {
+    public Page<Product> getAll(
+            @PageableDefault(sort = "name") Pageable pageable) {
         return service.findAll(pageable);
     }
-
     @GetMapping("/{id}")
     public ProductResponseDto getById(@PathVariable Long id) {
         Product product = service.findById(id);

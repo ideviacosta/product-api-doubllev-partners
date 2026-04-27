@@ -48,14 +48,27 @@ public class ProductService {
                 .build();
     }
 
-    public Product update(Long id, Product updated) {
+    public ProductResponseDto update(Long id, ProductRequestDto dto) {
+
         Product product = findById(id);
-        product.setName(updated.getName());
-        product.setDescription(updated.getDescription());
-        product.setPrice(updated.getPrice());
-        product.setStock(updated.getStock());
-        product.setCategory(updated.getCategory());
-        return repository.save(product);
+
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        product.setStock(dto.getStock());
+        product.setCategory(dto.getCategory());
+
+        Product updated = repository.save(product);
+
+        return ProductResponseDto.builder()
+                .id(updated.getId())
+                .name(updated.getName())
+                .description(updated.getDescription())
+                .price(updated.getPrice())
+                .stock(updated.getStock())
+                .category(updated.getCategory())
+                .createdAt(updated.getCreatedAt())
+                .build();
     }
 
     public void delete(Long id) {

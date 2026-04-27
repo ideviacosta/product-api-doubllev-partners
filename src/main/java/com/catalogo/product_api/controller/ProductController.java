@@ -44,10 +44,10 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return service.update(id, product);
+    public ProductResponseDto update(@PathVariable Long id,
+                                     @RequestBody ProductRequestDto dto) {
+        return service.update(id, dto);
     }
-
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
